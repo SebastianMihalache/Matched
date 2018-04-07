@@ -1,5 +1,8 @@
 package com.sedra.matched.Activities;
 
+import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,11 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.sedra.matched.Fragments.TestFragment;
+import com.sedra.matched.Fragments.TestingFragment;
 import com.sedra.matched.LoginActivity;
 import com.sedra.matched.R;
 
 public class NavDrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, TestFragment.OnFragmentInteractionListener, TestingFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +28,14 @@ public class NavDrawerActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //Create the fragment manager
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+        if (fragment == null){
+            fragment = new TestingFragment();
+            fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
+        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -54,9 +67,9 @@ public class NavDrawerActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_find_match) {
-            // Handle the camera action
+            loadTestingFragment();
         } else if (id == R.id.nav_matches) {
-
+            loadTestFragment();
         } else if (id == R.id.nav_my_profile) {
 
         } else if (id == R.id.nav_logout) {
@@ -68,5 +81,21 @@ public class NavDrawerActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    //Fragment changes
+    public void loadTestingFragment (){
+        TestingFragment tf = new TestingFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, tf).addToBackStack(null).commit();
+    }
+
+    public void loadTestFragment () {
+        TestFragment tf = new TestFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, tf).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

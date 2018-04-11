@@ -13,13 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.sedra.matched.Fragments.TestFragment;
-import com.sedra.matched.Fragments.TestingFragment;
+import com.sedra.matched.Fragments.MatchChatFragment;
+import com.sedra.matched.Fragments.FindMatchFragment;
 import com.sedra.matched.LoginActivity;
 import com.sedra.matched.R;
 
 public class NavDrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, TestFragment.OnFragmentInteractionListener, TestingFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MatchChatFragment.OnFragmentInteractionListener, FindMatchFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class NavDrawerActivity extends AppCompatActivity
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
         if (fragment == null){
-            fragment = new TestingFragment();
+            fragment = new FindMatchFragment();
             fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
 
@@ -67,9 +67,9 @@ public class NavDrawerActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_find_match) {
-            loadTestingFragment();
+            loadFindMatchFragment();
         } else if (id == R.id.nav_matches) {
-            loadTestFragment();
+            loadMatchChatFragment();
         } else if (id == R.id.nav_my_profile) {
 
         } else if (id == R.id.nav_logout) {
@@ -84,13 +84,13 @@ public class NavDrawerActivity extends AppCompatActivity
     }
 
     //Fragment changes
-    public void loadTestingFragment (){
-        TestingFragment tf = new TestingFragment();
+    public void loadFindMatchFragment (){
+        FindMatchFragment tf = new FindMatchFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, tf).addToBackStack(null).commit();
     }
 
-    public void loadTestFragment () {
-        TestFragment tf = new TestFragment();
+    public void loadMatchChatFragment () {
+        MatchChatFragment tf = new MatchChatFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, tf).addToBackStack(null).commit();
     }
 

@@ -1,14 +1,19 @@
 package com.sedra.matched.Fragments;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sedra.matched.Adaptors.UsersAdaptor;
 import com.sedra.matched.R;
+import com.sedra.matched.Services.UsersData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,8 +69,19 @@ public class MatchChatFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_match_chat, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_match_chat, container, false);
+        //create the recycler view and set the adaptor
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.match_chat_recycler);
+        UsersAdaptor mAdaptor = new UsersAdaptor(UsersData.getUserInstance().userData());
+        recyclerView.setAdapter(mAdaptor);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.addItemDecoration(new VerticalItemDecorator(25));
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -107,3 +123,17 @@ public class MatchChatFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 }
+
+    class VerticalItemDecorator extends RecyclerView.ItemDecoration {
+      private int spacer;
+
+      public VerticalItemDecorator(int spacer) {
+        this.spacer = spacer;
+    }
+
+          @Override
+         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+           outRect.bottom = spacer;
+         }
+    }
